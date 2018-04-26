@@ -3,11 +3,10 @@
 
 using namespace std;
 
-const int MOD = 1e+9 + 7;
-#define N 10000
+const int MOD = 1e9 + 7;
 
 // Repeat squares method. This algorithm is  O(logn)
-long long pow(long long x, long long n){
+long long mod_pow(long long x, long long n){
   long long res = 1;
   while(n > 0){
     if((n & 1) == 1){
@@ -23,9 +22,14 @@ struct modular_table{
 public:
   vector<long long> table;  //table[N] is N^(-1) % MOD
   
-  modular_table(int n){
-    table.resize(n + 1);
-    table[n] = pow(n, MOD - 2);
+  modular_table(int n): table(n + 1){
+    long long fact = 1;
+    
+    for(int i = 1; i <= n; ++i){
+      fact = fact * i % MOD;
+    }
+
+    table[n] = mod_pow(fact, MOD - 2);
     for(int i = n - 1; i >= 0; --i){
       table[i] = table[i + 1] * (i + 1) % MOD;
     }
